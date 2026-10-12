@@ -1,3 +1,6 @@
+// Immutable integer chunk coordinate used as a dictionary key on client and server.
+// Equality compares all three axes; the hash combines them for spatial lookup.
+
 // Assets/Scripts/EAS/Net/Client/ChunkCoord.cs
 namespace EAS.Net
 {

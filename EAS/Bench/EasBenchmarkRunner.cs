@@ -1,3 +1,6 @@
+// Runs repeatable chunk encoding, compression, and update benchmarks inside Unity.
+// Warmup and measured iterations are separate; optional CSV output records the results.
+
 // Assets/Scripts/EAS/Bench/EasBenchmarkRunner.cs
 using System;
 using System.Collections.Generic;

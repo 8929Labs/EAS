@@ -1,3 +1,6 @@
+// Updates server chunk subscriptions when a player crosses a chunk boundary.
+// Desired coordinates form either a cube or an L1 diamond around the player chunk.
+
 // Assets/Scripts/EAS/Net/Server/EasServerChunkInterest.cs
 using System.Collections.Generic;
 using Mirror;

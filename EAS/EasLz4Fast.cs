@@ -1,3 +1,6 @@
+// Provides optional pointer-based LZ4 paths and Unity NativeArray overloads.
+// Pooled temporary buffers reduce allocation pressure; returned managed blobs still own their bytes.
+
 // Assets/Scripts/EAS/EasLz4Fast.cs
 // "Burst-friendly fast paths" in practice means:
 // 1) do all heavy per-cell packing (palette/dense/bitplane/delta building) in Burst jobs

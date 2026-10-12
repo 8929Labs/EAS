@@ -1,3 +1,6 @@
+// Maintains local chunks and baseline IDs from Mirror full, ops, and unsubscribe messages.
+// Chunk-change callbacks let consumers refresh meshes after received data is applied.
+
 // Assets/Scripts/EAS/Net/Client/EasNetClient.cs
 using System.Collections.Generic;
 using Mirror;

@@ -1,3 +1,6 @@
+// Encodes D1 differences by scanning a baseline and replacement chunk for changed runs.
+// Run starts are absolute indices; values inside each run use four bits per cell.
+
 // Assets/Scripts/EAS/EasDeltaCodec.cs
 using System;
 using System.Collections.Generic;

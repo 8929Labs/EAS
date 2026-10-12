@@ -1,3 +1,6 @@
+// Defines the search policy for automatic payload compression.
+// Fast limits Deflate trials for small inputs; Smallest tries all enabled codecs.
+
 // Assets/Scripts/EAS/EasCompressionProfile.cs
 namespace EAS
 {

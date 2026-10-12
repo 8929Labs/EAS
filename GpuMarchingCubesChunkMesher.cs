@@ -1,3 +1,7 @@
+// Owns the GPU buffers used to turn a chunk density grid into a Unity mesh.
+// The sample grid has one more point per axis than the cell grid; mesh readback is synchronous.
+// Dispose this mesher when it is no longer needed to release its graphics buffers.
+
 using System;
 using System.Runtime.InteropServices;
 using UnityEngine;

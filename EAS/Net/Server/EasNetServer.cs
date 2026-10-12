@@ -1,3 +1,6 @@
+// Owns authoritative chunks, per-connection subscriptions, and baseline tracking.
+// A Hot/Warm/Cold scheduler batches touched-cell operations and sends full data when needed.
+
 // Assets/Scripts/EAS/Net/Server/EasNetServer.cs
 using System;
 using System.Collections.Generic;

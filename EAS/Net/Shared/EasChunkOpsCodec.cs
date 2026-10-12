@@ -1,3 +1,6 @@
+// Encodes O1 operations directly from touched cells without retaining a baseline snapshot.
+// Sorted contiguous indices become runs with relative starts and four-bit replacement values.
+
 // Assets/Scripts/EAS/Net/Client/EasChunkOpsCodec.cs
 using System;
 using System.Collections.Generic;

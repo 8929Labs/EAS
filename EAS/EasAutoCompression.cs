@@ -1,3 +1,6 @@
+// Selects a payload compression codec by comparing enabled candidates against raw bytes.
+// Savings thresholds prevent small reductions from justifying extra compression work.
+
 // Assets/Scripts/EAS/EasAutoCompression.cs
 using System;
 

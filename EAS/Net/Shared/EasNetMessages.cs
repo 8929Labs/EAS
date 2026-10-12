@@ -1,3 +1,6 @@
+// Defines Mirror messages for full chunks, incremental operations, unsubscription, and resync.
+// Baseline IDs let the receiver detect operations that do not match its current chunk state.
+
 // Assets/Scripts/EAS/Net/Client/EasNetMessages.cs
 using Mirror;
 

@@ -1,3 +1,6 @@
+// Provides matching bit-stream readers and writers for compact voxel values and palette indices.
+// Bits are consumed least-significant first; both sides must use the same field widths.
+
 // Assets/Scripts/EAS/EasBitPacker.cs
 using System;
 

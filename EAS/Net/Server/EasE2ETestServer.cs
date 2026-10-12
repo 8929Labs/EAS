@@ -1,3 +1,6 @@
+// Creates representative test chunks and applies timed edits to exercise EAS networking.
+// Use with the client diagnostic component to observe full transfers and incremental updates.
+
 // Assets/Scripts/EAS/Net/Server/EasE2ETestServer.cs
 using System;
 using System.Collections.Generic;

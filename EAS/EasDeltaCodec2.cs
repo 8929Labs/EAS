@@ -1,3 +1,6 @@
+// Encodes D2 differences from the replacement chunk touched set instead of scanning all cells.
+// Touched cells that match the baseline are omitted; run starts use relative offsets.
+
 // Assets/Scripts/EAS/EasDeltaCodec2.cs
 using System;
 using System.Collections.Generic;

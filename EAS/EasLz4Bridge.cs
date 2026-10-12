@@ -1,3 +1,6 @@
+// Optional managed K4os LZ4 adapter compiled when EAS_LZ4 is defined.
+// Each compressed blob prefixes its original byte length in little-endian order.
+
 // Assets/Scripts/EAS/EasLz4Bridge.cs
 // Only compiled if you add the dependency and define EAS_LZ4.
 #if EAS_LZ4

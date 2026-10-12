@@ -1,3 +1,6 @@
+// Persists complete chunk blobs through EasChunkCodec using files or caller-owned streams.
+// Successful saves clear the chunk dirty flag; stream loading consumes the remaining bytes.
+
 // Assets/Scripts/EAS/EasChunkSerializer.cs
 using System.IO;
 

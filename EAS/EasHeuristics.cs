@@ -1,3 +1,6 @@
+// Chooses a voxel representation from the chunk value distribution.
+// Uniform chunks need one value; small palettes reduce index width; dense values use nibbles.
+
 // Assets/Scripts/EAS/EasHeuristics.cs
 namespace EAS
 {

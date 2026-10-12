@@ -1,3 +1,6 @@
+// Stores chunk values in packed nibbles and tracks value counts, dirty state, and touched cells.
+// The touched set supports sparse network updates; bulk application defers count rebuilding.
+
 // Assets/Scripts/EAS/EasChunk.cs
 using System;
 using System.Collections.Generic;

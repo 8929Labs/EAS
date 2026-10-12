@@ -1,3 +1,7 @@
+// Shared lookup data for mapping a cube occupancy mask to intersected edges and triangles.
+// Triangle entries are edge numbers consumed in groups of three until the -1 sentinel.
+// The triangle table below is partial; its existing note describes the missing cases.
+
 #ifndef MARCHING_CUBES_TABLES_INCLUDED
 #define MARCHING_CUBES_TABLES_INCLUDED
 

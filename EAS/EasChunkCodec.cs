@@ -1,3 +1,6 @@
+// Combines voxel encoding, optional payload compression, and a versioned chunk header.
+// Decoding supports the existing v1 and v2 layouts; encoding uses the current codec settings.
+
 // Assets/Scripts/EAS/EasChunkCodec.cs
 // Changes:
 // - Uses v2 header (already in your previous version)

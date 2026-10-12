@@ -1,3 +1,6 @@
+// Centralizes optional diagnostic logging switches used by storage and networking code.
+// The master Enabled flag is checked alongside the relevant category flag at call sites.
+
 // Assets/Scripts/EAS/EasDebug.cs
 namespace EAS
 {

@@ -1,3 +1,6 @@
+// Dispatches raw, Deflate, and LZ4 payload processing behind a common interface.
+// Decompression receives the expected output size from the chunk header.
+
 // Assets/Scripts/EAS/EasCompression.cs
 // Updated to route LZ4 through EasLz4Fast when available (allocation-light).
 using System;

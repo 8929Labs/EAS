@@ -1,3 +1,6 @@
+// Ensures the scene has an EAS network client and forwards chunk-change notifications.
+// Early execution order initializes the client hook before typical scene components.
+
 // Assets/Scripts/EAS/Net/Client/EasNetBootstrap.cs
 using UnityEngine;
 

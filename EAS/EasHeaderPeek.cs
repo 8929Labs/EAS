@@ -1,3 +1,6 @@
+// Reads chunk header metadata for diagnostics without decoding the voxel payload.
+// The returned Info reports format details, sizes, and parsing errors.
+
 // Assets/Scripts/EAS/EasHeaderPeek.cs
 using System;
 

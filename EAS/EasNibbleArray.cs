@@ -1,3 +1,6 @@
+// Packs two four-bit values per byte with even indices in the low nibble.
+// Setting one element preserves the neighboring nibble; RawBytes exposes the backing storage.
+
 // Assets/Scripts/EAS/EasNibbleArray.cs
 using System;
 

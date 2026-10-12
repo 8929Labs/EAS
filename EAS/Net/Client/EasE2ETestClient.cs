@@ -1,3 +1,6 @@
+// Observes client chunk-change events and samples received values for range validation.
+// This is a runtime diagnostic component; it removes its event subscription on destruction.
+
 // Assets/Scripts/EAS/Net/Client/EasE2ETestClient.cs
 using System.Collections.Generic;
 using UnityEngine;

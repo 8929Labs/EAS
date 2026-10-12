@@ -1,3 +1,7 @@
+// Extracts the iso-surface with one GPU invocation per cell using Marching Cubes.
+// Corner ordering must match the edge and triangle lookup tables in MarchingCubesTables.cginc.
+// The caller must reset the vertex counter and allocate enough output space before dispatch.
+
 #pragma kernel March
 
 StructuredBuffer<float> _Densities;
