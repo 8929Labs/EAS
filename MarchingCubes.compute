@@ -1,0 +1,135 @@
+#pragma kernel March
+
+StructuredBuffer<float> _Densities;
+
+RWStructuredBuffer<float3> _OutVertices; // sized for MAX_VERTS
+RWStructuredBuffer<uint> _OutIndices; // sized for MAX_VERTS (same)
+RWStructuredBuffer<uint> _Counters; // length 1, holds vertexCount
+
+int _CellsPerAxis;
+int _SamplesPerAxis;
+float _IsoLevel;
+float3 _ChunkOrigin;
+float _VoxelSize;
+
+#include "MarchingCubesTables.cginc"
+
+uint SampleIndex(int x, int y, int z)
+{
+    return (uint) (x + _SamplesPerAxis * (y + _SamplesPerAxis * z));
+}
+float SampleDensity(int x, int y, int z)
+{
+    return _Densities[SampleIndex(x, y, z)];
+}
+
+float3 CornerPos(int x, int y, int z)
+{
+    return _ChunkOrigin + float3(x, y, z) * _VoxelSize;
+}
+
+float3 VertexInterp(float iso, float3 p1, float3 p2, float v1, float v2)
+{
+    float d = (v2 - v1);
+    if (abs(d) < 1e-8)
+        return p1;
+    float t = (iso - v1) / d;
+    return lerp(p1, p2, saturate(t));
+}
+
+[numthreads(8, 8, 8)]
+void March(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= (uint) _CellsPerAxis || id.y >= (uint) _CellsPerAxis || id.z >= (uint) _CellsPerAxis)
+        return;
+
+    int x = (int) id.x, y = (int) id.y, z = (int) id.z;
+
+    float v[8];
+    v[0] = SampleDensity(x, y, z);
+    v[1] = SampleDensity(x + 1, y, z);
+    v[2] = SampleDensity(x + 1, y, z + 1);
+    v[3] = SampleDensity(x, y, z + 1);
+    v[4] = SampleDensity(x, y + 1, z);
+    v[5] = SampleDensity(x + 1, y + 1, z);
+    v[6] = SampleDensity(x + 1, y + 1, z + 1);
+    v[7] = SampleDensity(x, y + 1, z + 1);
+
+    int cubeIndex = 0;
+    if (v[0] < _IsoLevel)
+        cubeIndex |= 1;
+    if (v[1] < _IsoLevel)
+        cubeIndex |= 2;
+    if (v[2] < _IsoLevel)
+        cubeIndex |= 4;
+    if (v[3] < _IsoLevel)
+        cubeIndex |= 8;
+    if (v[4] < _IsoLevel)
+        cubeIndex |= 16;
+    if (v[5] < _IsoLevel)
+        cubeIndex |= 32;
+    if (v[6] < _IsoLevel)
+        cubeIndex |= 64;
+    if (v[7] < _IsoLevel)
+        cubeIndex |= 128;
+
+    int edges = edgeTable[cubeIndex];
+    if (edges == 0)
+        return;
+
+    float3 p[8];
+    p[0] = CornerPos(x, y, z);
+    p[1] = CornerPos(x + 1, y, z);
+    p[2] = CornerPos(x + 1, y, z + 1);
+    p[3] = CornerPos(x, y, z + 1);
+    p[4] = CornerPos(x, y + 1, z);
+    p[5] = CornerPos(x + 1, y + 1, z);
+    p[6] = CornerPos(x + 1, y + 1, z + 1);
+    p[7] = CornerPos(x, y + 1, z + 1);
+
+    float3 vertList[12];
+    if (edges & 1)
+        vertList[0] = VertexInterp(_IsoLevel, p[0], p[1], v[0], v[1]);
+    if (edges & 2)
+        vertList[1] = VertexInterp(_IsoLevel, p[1], p[2], v[1], v[2]);
+    if (edges & 4)
+        vertList[2] = VertexInterp(_IsoLevel, p[2], p[3], v[2], v[3]);
+    if (edges & 8)
+        vertList[3] = VertexInterp(_IsoLevel, p[3], p[0], v[3], v[0]);
+    if (edges & 16)
+        vertList[4] = VertexInterp(_IsoLevel, p[4], p[5], v[4], v[5]);
+    if (edges & 32)
+        vertList[5] = VertexInterp(_IsoLevel, p[5], p[6], v[5], v[6]);
+    if (edges & 64)
+        vertList[6] = VertexInterp(_IsoLevel, p[6], p[7], v[6], v[7]);
+    if (edges & 128)
+        vertList[7] = VertexInterp(_IsoLevel, p[7], p[4], v[7], v[4]);
+    if (edges & 256)
+        vertList[8] = VertexInterp(_IsoLevel, p[0], p[4], v[0], v[4]);
+    if (edges & 512)
+        vertList[9] = VertexInterp(_IsoLevel, p[1], p[5], v[1], v[5]);
+    if (edges & 1024)
+        vertList[10] = VertexInterp(_IsoLevel, p[2], p[6], v[2], v[6]);
+    if (edges & 2048)
+        vertList[11] = VertexInterp(_IsoLevel, p[3], p[7], v[3], v[7]);
+
+    // Write triangles: each tri => 3 verts, 3 indices.
+    // Reserve space in one atomic.
+    for (int i = 0; triTable[cubeIndex][i] != -1; i += 3)
+    {
+        int ea = triTable[cubeIndex][i + 0];
+        int eb = triTable[cubeIndex][i + 1];
+        int ec = triTable[cubeIndex][i + 2];
+
+        uint base;
+        InterlockedAdd(_Counters[0], 3, base); // reserves [base..base+2]
+
+        _OutVertices[base + 0] = vertList[ea];
+        _OutVertices[base + 1] = vertList[eb];
+        _OutVertices[base + 2] = vertList[ec];
+
+        _OutIndices[base + 0] = base + 0;
+        _OutIndices[base + 1] = base + 1;
+        _OutIndices[base + 2] = base + 2;
+    }
+}
